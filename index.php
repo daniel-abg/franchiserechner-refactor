@@ -1,18 +1,20 @@
 ﻿<!DOCTYPE html>
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 <html lang="de">
-
-
 	<head>
-		<?php include 'head.php';?>
+		<?php include 'head.php'; ?>
 	</head>
 
 	<body>
     <div id="wrapper">
-    <?php include 'header.php';?>
+		<?php 
+			include 'header.php';
+			
+			// Verbindung zur Datenbank
+			include 'connection.php';
+		?>
 
 		<div class="container">
-			<!-- PHP-Bereich -->
 			<?php
 				if(isset($_GET['output'])) {
 					/* Formular-Eingaben auswerten */
@@ -75,10 +77,10 @@
 			<!-- Inhaltsbereich -->
             <div id="introductionContainer">
                 <i id="introductionIcon" class="fas fa-info fa-3x"></i>
-			<p id="introduction">
-				Welche der von der möglichen Jahresfranchisen von 300 bis 2500 Franken ist für Sie empfehlenswert?
-				Folgender Rechner kann Ihnen helfen, anhand Ihrer Gesundheitskosten die für Sie rentable Franchise zu finden.
-			</p>
+				<p id="introduction">
+					Welche der von der möglichen Jahresfranchisen von 300 bis 2500 Franken ist für Sie empfehlenswert?
+					Folgender Rechner kann Ihnen helfen, anhand Ihrer Gesundheitskosten die für Sie rentable Franchise zu finden.
+				</p>
             </div>
 			<form action="?output=1" method="post">
 				<!-- Formulare zur Eingabe der persönlichen Daten -->
@@ -100,53 +102,50 @@
 								<label for="postleitzahl">Postleitzahl</label>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fas fa-map-marker-alt"></i></span>
-								<input type="text" class="form-control" id="postleitzahl" size="40" min="1000" max="9999" maxlength="4" name="postleitzahl" placeholder="Postleitzahl" value="<?php if(isset( $postleitzahl)){echo htmlspecialchars($postleitzahl);}?>">
-							</div>
+									<input type="text" class="form-control" id="postleitzahl" size="40" min="1000" max="9999" maxlength="4" name="postleitzahl" placeholder="Postleitzahl" value="<?php if(isset( $postleitzahl)){echo htmlspecialchars($postleitzahl);}?>">
+								</div>
                             </div>
 								
 							<?php
 								if(isset($_POST["postleitzahl"])) {
 								$plz = filter_var($_POST['postleitzahl'], FILTER_SANITIZE_NUMBER_INT);
 
-								if(is_numeric($plz) AND $plz < 10000 AND $plz > 0){
-									// Verbindung zur Datenbank 			
-									include 'connection.php';
+									if(is_numeric($plz) AND $plz < 10000 AND $plz > 0){
+										$sql = "SELECT * FROM orte WHERE PLZ = '".$verbindung->real_escape_string($plz)."'";
+										$tarif = $verbindung->query($sql);
+										$c_tarif = $verbindung->query($sql);
 
-									$sql = "SELECT * FROM orte WHERE PLZ = '".$verbindung->real_escape_string($plz)."'";
-									$tarif = $verbindung->query($sql);
-									$c_tarif = $verbindung->query($sql);
+										$count = $c_tarif->fetch_assoc();
+										$count = $count['Ort'];
 
-									$count = $c_tarif->fetch_assoc();
-									$count = $count['Ort'];
-
-									if($count != "") {
-										echo "<span id='praemienstadt' style=''>";
-											echo "<div class='form-group'><select class='form-control' name='praemienort' style='height: 100% !important;'>";
-											echo "<option  selected disabled hidden style='display: none' value='' ></option>";
-											
-											$while = 0;
-											while($stadt = $tarif->fetch_assoc()) {
-												$while++;
-												$ort = $stadt['Ort'];
-												$bfs = $stadt['BFS'];
-												$gemeinde = $stadt['Gemeinde'];
-												$praemienregion = $stadt['Kanton'];
+										if($count != "") {
+											echo "<span id='praemienstadt' style=''>";
+												echo "<div class='form-group'><select class='form-control' name='praemienort' style='height: 100% !important;'>";
+												echo "<option  selected disabled hidden style='display: none' value='' ></option>";
 												
-												if($while == 1) {
-													$select = "selected";
-												} else { 
-													$select = "";
-												}											
-												echo "<option ".$select." value='".$praemienregion."'>".$ort." - ".$bfs." (".$gemeinde.")</option>";
-											}
-											echo "</select></div>";
-										echo "</span>";
+												$while = 0;
+												while($stadt = $tarif->fetch_assoc()) {
+													$while++;
+													$ort = $stadt['Ort'];
+													$bfs = $stadt['BFS'];
+													$gemeinde = $stadt['Gemeinde'];
+													$praemienregion = $stadt['Kanton'];
+													
+													if($while == 1) {
+														$select = "selected";
+													} else { 
+														$select = "";
+													}											
+													echo "<option ".$select." value='".$praemienregion."'>".$ort." - ".$bfs." (".$gemeinde.")</option>";
+												}
+												echo "</select></div>";
+											echo "</span>";
+										} else {
+											echo "<div style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</div>";
+										}
 									} else {
-										echo "<div style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</div>";
+										echo "";
 									}
-								} else {
-									echo "";
-								}
 								}
 							?>
 						
@@ -164,22 +163,17 @@
 											}else{
 												$( "#praemienstadt").hide();
 											}
-
 										});
 
 									}else{
 										$( "#praemienstadt" ).hide();
 									}
 								});
-							</script>
-							<?php
-								
-							?>							
+							</script>				
 						</div>
 							
 						<!-- Spalte: Jährliche Gesundheitskosten -->						
 						<div class="col-12 col-md-4 form-group">
-
 							<label for="gesundheitskosten">Jährliche Gesundheitskosten</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fas fa-wallet"></i></span>
@@ -266,10 +260,7 @@
 						} else {
 							$franchisen = array (300, 500, 1000, 1500, 2000, 2500);
 						}
-						
-						/* Verbindung zur Datenbank */				
-						include 'connection.php';
-				
+										
 						/* Jahresprämie rechnen */
 						$sql = "SELECT * FROM ".strtolower($verbindung->real_escape_string($altersgruppe))." WHERE Versicherungsmodell='".$verbindung->real_escape_string($versicherungsmodell)."' AND Kanton='".$verbindung->real_escape_string($praemienregion)."' AND Unfall='".$verbindung->real_escape_string($unfalldeckung)."'";
 						$tarif =$verbindung->query($sql);
@@ -282,7 +273,6 @@
 						?>
 						
 						<!-- Errechnung und Ausgabe der Kosten -->
-
 						<div class="box">
                             <h4>Kosten im Jahr 2022*</h4>
 							<table class="table">
@@ -323,11 +313,11 @@
 										for($i = 0; $i < 6; $i++) {
 											echo "<tr>
 													<td style='padding: 20px'>
-														". $franchisen[$i]."
+														".$franchisen[$i]."
 													</td>
 													<td class='td-kosten'>
 														<a class='a-kosten' data-toggle='collapse' href='#collapseKosten".$i."' role='button' aria-expanded='false' aria-controls='collapseKosten".$i."'>
-															".$kosten = $jahrespraemie1[$i] + $franchisekosten1[$i] + $selbstbehalt1[$i]."<i style='float: right;' class='fas fa-info'></i>
+															".$jahrespraemie1[$i] + $franchisekosten1[$i] + $selbstbehalt1[$i]."<i style='float: right;' class='fas fa-info'></i>
 														</a>
 														<div class='collapse' id='collapseKosten".$i."'>
 															<div style='margin-top: 10px;' class='card card-body'>
@@ -359,10 +349,8 @@
 					}
 				}		
 			?>
-			
-
 		</div>
-</div>
-    <?php include 'footer.php';?>
+	</div>
+    <?php include 'footer.php'; ?>
 	</body>
 </html>
