@@ -295,18 +295,17 @@
 								<tbody>									
 									<?php
 										/* Franchisekosten und Selbstbehalt berechnen */
-										$y = 0;
 										/*$franchisen1 = $franchisen;	 Speichert das Array Franchisen (siehe Franchisen definieren) als neues Array */
-										while ($y < 6) { /* Varialbe y wird eingesetzt, um sechs Durchgänge für die sechs Franchisen zu erhalten */
-											if ($franchisen[$y] < $gesundheitskosten) { /* Variable y wird eingesetzt, um im Array Franchisen jeweils eine Position weiter zu gehen */
-												$franchisekosten = $franchisen[$y];	/* Wenn die Gesundheitskosten höher sind als die Franchise, so fällt die ganze Franchise an */
-												$selbstbehalt2 = ($gesundheitskosten - $franchisen[$y])*0.1;
+										for($i = 0; $i < 6; $i++) {
+											if ($franchisen[$i] < $gesundheitskosten) {
+												$franchisekosten = $franchisen[$i];	/* Wenn die Gesundheitskosten höher sind als die Franchise, so fällt die ganze Franchise an */
+												$selbstbehalt2 = ($gesundheitskosten - $franchisen[$i])*0.1;
 												if ($altersgruppe != "Kinder" and $selbstbehalt2 < 700){
-												$selbstbehalt = ($gesundheitskosten - $franchisen[$y])*0.1; /* Nach der Franchise fallen von der Differenz vom Gesundheitskosten und Franchise der Selbstbehalt von 10% an */
+												$selbstbehalt = ($gesundheitskosten - $franchisen[$i])*0.1; /* Nach der Franchise fallen von der Differenz vom Gesundheitskosten und Franchise der Selbstbehalt von 10% an */
 												} elseif ($altersgruppe != "Kinder" and $selbstbehalt2 >= 700) {
 													$selbstbehalt = 700; /* Erwachsenene zahlen einen maximalen Selbstbehalt von CHF 700.- */
 												} elseif ($altersgruppe = "Kinder" and $selbstbehalt2 < 350){
-												$selbstbehalt = ($gesundheitskosten - $franchisen[$y])*0.1;
+												$selbstbehalt = ($gesundheitskosten - $franchisen[$i])*0.1;
 												} elseif ($altersgruppe = "Kinder" and $selbstbehalt2 >= 350) {
 													$selbstbehalt = 350; /* Kinder zahlen einen maximalen Selbstbehalt von CHF 350.- */
 												}
@@ -316,32 +315,29 @@
 											}
 											$selbstbehalt1[] = $selbstbehalt; /* Der jeweilige Selbstbehalt wird nach der Schleife in das Array Selbstbehalt1 gespeichert */
 											$franchisekosten1[] = $franchisekosten; /* Die jeweiligen Franchisekosten werden nach der Schleife in das Array Franchisekosten1 gespeichert */
-											$y++;
 										}
 									?>
 										
 									<!-- Kosten rechnen und ausgeben -->
 									<?php
-										$z = 0;
-										while ($z < 6) {
+										for($i = 0; $i < 6; $i++) {
 											echo "<tr>
 													<td style='padding: 20px'>
-														". $franchisen[$z]."
+														". $franchisen[$i]."
 													</td>
 													<td class='td-kosten'>
-														<a class='a-kosten' data-toggle='collapse' href='#collapseKosten".$z."' role='button' aria-expanded='false' aria-controls='collapseKosten".$z."'>
-															".$kosten = $jahrespraemie1[$z] + $franchisekosten1[$z] + $selbstbehalt1[$z]."<i style='float: right;' class='fas fa-info'></i>
+														<a class='a-kosten' data-toggle='collapse' href='#collapseKosten".$i."' role='button' aria-expanded='false' aria-controls='collapseKosten".$i."'>
+															".$kosten = $jahrespraemie1[$i] + $franchisekosten1[$i] + $selbstbehalt1[$i]."<i style='float: right;' class='fas fa-info'></i>
 														</a>
-														<div class='collapse' id='collapseKosten".$z."'>
+														<div class='collapse' id='collapseKosten".$i."'>
 															<div style='margin-top: 10px;' class='card card-body'>
-																Jahresprämie: ".$jahrespraemie1[$z]."<br>
-																Franchise: ".$franchisekosten1[$z]."<br>
-																Selbstbehalt: ".$selbstbehalt1[$z]."
+																Jahresprämie: ".$jahrespraemie1[$i]."<br>
+																Franchise: ".$franchisekosten1[$i]."<br>
+																Selbstbehalt: ".$selbstbehalt1[$i]."
 															</div>
 														</div>
 													</td>
 												</tr>"; /* Die Arrays Jahrespraemie1, Franchisekosten1 und Selbstbehalt1 addieren und ausgeben. */
-											$z++;
 										}
 									?>
 								</tbody>
