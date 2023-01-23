@@ -12,6 +12,27 @@
 			
 			// Verbindung zur Datenbank
 			include 'connection.php';
+
+			function definiereAltersgruppe($jahrgang) {
+				$alter = date("Y")- $jahrgang + 1;
+				if ($alter < 19) {
+					$altersgruppe = "Kinder";
+				} elseif ($alter < 26) {
+					$altersgruppe = "Jugendliche";
+				} else {
+					$altersgruppe = "Erwachsene";
+				}
+				return $altersgruppe;
+			}
+
+			function definiereFranchisen($altersgruppe) {
+				if ($altersgruppe == "Kinder") {
+					$franchisen = array (0, 100, 200, 300, 400, 500);
+				} else {
+					$franchisen = array (300, 500, 1000, 1500, 2000, 2500);
+				}
+				return $franchisen;
+			}
 		?>
 
 		<div class="container">
@@ -244,23 +265,9 @@
                     }elseif($jahrgang > date("Y",strtotime('+1 year')) or $jahrgang < 1900) {
 						echo '<div class="alert alert-warning" role="alert">Bitte geben Sie einen gültigen Jahrgang an.</div>';
 					}else {
-						/* Altersgruppe definieren */
-						$alter = date("Y")- $jahrgang + 1;
-						if ($alter < 19) {
-							$altersgruppe = "Kinder";
-						} elseif ($alter < 26) {
-							$altersgruppe = "Jugendliche";
-						} else {
-							$altersgruppe = "Erwachsene";
-						}
-				
-						/* Franchisen definieren */
-						if ($altersgruppe == "Kinder") {
-							$franchisen = array (0, 100, 200, 300, 400, 500);
-						} else {
-							$franchisen = array (300, 500, 1000, 1500, 2000, 2500);
-						}
-										
+						$altersgruppe = definiereAltersgruppe($jahrgang);
+						$franchisen = definiereFranchisen($altersgruppe);
+						
 						/* Jahresprämie rechnen */
 						$sql = "SELECT * FROM ".strtolower($verbindung->real_escape_string($altersgruppe))." WHERE Versicherungsmodell='".$verbindung->real_escape_string($versicherungsmodell)."' AND Kanton='".$verbindung->real_escape_string($praemienregion)."' AND Unfall='".$verbindung->real_escape_string($unfalldeckung)."'";
 						$tarif =$verbindung->query($sql);
