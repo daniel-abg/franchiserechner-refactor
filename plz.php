@@ -36,7 +36,7 @@
 			
 			echo "</select></div>";
 		} else {
-			echo "<div style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</div>";
+			echo "<p style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</p>";
 		}
 	} else {
 		echo "";

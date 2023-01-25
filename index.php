@@ -9,8 +9,6 @@
     <div id="wrapper">
 		<?php 
 			include 'header.php';
-			
-			// Verbindung zur Datenbank
 			include 'connection.php';
 
 			function definiereAltersgruppe($jahrgang) {
@@ -33,6 +31,40 @@
 				}
 				return $franchisen;
 			}
+
+			function definiereUnfalldeckung($unfalldeckung) {				
+				switch($unfalldeckung){
+					case 0:
+						$unfalldeckung = "nein";
+						break;
+					case 1:
+						$unfalldeckung = "ja";
+						break;
+					default:
+						$unfalldeckung = '';
+				}
+				return $unfalldeckung;
+			}
+
+			function definiereVersicherungsmodell($versicherungsmodell) {				
+				switch($_POST["versicherungsmodell"]){
+					case "freiearztwahl":
+						$versicherungsmodell = "Freie Arztwahl";
+						break;
+					case "hausarztmodell":
+						$versicherungsmodell = "Hausarzt-Modell";
+						break;
+					case "telmedmodell":
+						$versicherungsmodell = "Telmed-Modell";
+						break;
+					case "digimedmodell":
+						$versicherungsmodell = "Digimed-Modell";
+						break;
+					default:
+						$versicherungsmodell = "";
+				}
+				return $versicherungsmodell;
+			}
 		?>
 
 		<div class="container">
@@ -54,48 +86,15 @@
 					$gesundheitskosten = intval($_POST["gesundheitskosten"]);
 					
 					if(isset($_POST["versicherungsmodell"])) {
-
-                        switch($_POST["versicherungsmodell"]){
-                            case "freiearztwahl":
-                                $versicherungsmodell = "Freie Arztwahl";
-                                $versicherungsmodell_checked_freiearztwahl = "checked";
-                                break;
-                            case "hausarztmodell":
-                                $versicherungsmodell = "Hausarztmodell";
-                                $versicherungsmodell_checked_hausarztmodell = "checked";
-                                break;
-                            case "telmedmodell":
-                                $versicherungsmodell = "Telmed-Modell";
-                                $versicherungsmodell_checked_telmedmodell = "checked";
-                                break;
-                            case "digimed":
-                                $versicherungsmodell = "Digimed-Modell";
-                                $versicherungsmodell_checked_digimed = "checked";
-                                break;
-                            default:
-                                $versicherungsmodell = "";
-                        }
+						$versicherungsmodell = definiereVersicherungsmodell($_POST["versicherungsmodell"]);
 					}
 					
 					if(isset($_POST["unfalldeckung"])) {
-
-                        switch($_POST["unfalldeckung"]){
-                            case "ja":
-                                $unfalldeckung = "ja";
-							    $unfalldeckung_checked_ja = "checked";
-                                break;
-                            case "nein":
-                                $unfalldeckung = "nein";
-							    $unfalldeckung_checked_nein = "checked";
-                                break;
-                            default:
-                                $unfalldeckung = '';
-                        }
+						$unfalldeckung = definiereUnfalldeckung($_POST["unfalldeckung"]);
 					}
 				}
 			?>
-		
-			<!-- Inhaltsbereich -->
+
             <div id="introductionContainer">
                 <i id="introductionIcon" class="fas fa-info fa-3x"></i>
 				<p id="introduction">
@@ -104,20 +103,17 @@
 				</p>
             </div>
 			<form action="?output=1" method="post">
-				<!-- Formulare zur Eingabe der persönlichen Daten -->
 				<h4>Persönliche Daten</h4>
 				<div class="box">
 					<div class="row">
-						<!-- Spalte: Jahrgang -->
 						<div class="col-12 col-md-4 form-group">
 							<label for="jahrgang">Jahrgang</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fas fa-birthday-cake"></i></span>
-							<input type="text" class="form-control" id="jahrgang" size="40" min="1900" max="<?php echo date("Y"); ?>" maxlength="250" name="jahrgang" placeholder="Jahrgang" value="<?php if(isset( $jahrgang)){echo htmlspecialchars($jahrgang);}?>">
+							<input type="text" class="form-control" size="40" min="1900" max="<?php echo date("Y"); ?>" maxlength="250" name="jahrgang" placeholder="Jahrgang" value="<?php if(isset( $jahrgang)){echo htmlspecialchars($jahrgang);}?>">
                         </div>
                         </div>
-						
-						<!-- Spalte: Prämienregion -->
+
 						<div class="col-12 col-md-4">
 							<div class="form-group">
 								<label for="postleitzahl">Postleitzahl</label>
@@ -162,7 +158,7 @@
 												echo "</select></div>";
 											echo "</span>";
 										} else {
-											echo "<div style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</div>";
+											echo "<p style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</p>";
 										}
 									} else {
 										echo "";
@@ -192,58 +188,59 @@
 								});
 							</script>				
 						</div>
-							
-						<!-- Spalte: Jährliche Gesundheitskosten -->						
+
 						<div class="col-12 col-md-4 form-group">
 							<label for="gesundheitskosten">Jährliche Gesundheitskosten</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fas fa-wallet"></i></span>
-							<input type="text" class="form-control" id="gesundheitskosten" size="40" maxlength="250" name="gesundheitskosten" placeholder="Gesundheitskosten" value="<?php if(isset( $gesundheitskosten)){echo htmlspecialchars($gesundheitskosten);}?>">
+							<input type="text" class="form-control" size="40" maxlength="250" name="gesundheitskosten" placeholder="Gesundheitskosten" value="<?php if(isset( $gesundheitskosten)){echo htmlspecialchars($gesundheitskosten);}?>">
 						</div>
                         </div>
 					</div>
 				</div>
 
-				<!-- Formulare zur Eingabe der Grundversicherung -->
 				<h4>Grundversicherung</h4>
 				<div class="box">
 					<div class="row">
-						<!-- Spalte: Versicherungsmodell -->
 						<div class="col-12 col-md-9">
 							<label style="display: block;">Versicherungsmodell</label>
 							<div class="btn-group btn-group-toggle" data-toggle="buttons">
-								<label class="btn btn-green  <?php if(isset($versicherungsmodell_checked_freiearztwahl)) { echo "active";} ?>">
-									<input type="radio" name="versicherungsmodell" id="freiearztwahl" autocomplete="off" value="freiearztwahl" <?php if(isset($versicherungsmodell_checked_freiearztwahl)) { echo $versicherungsmodell_checked_freiearztwahl;} ?>> Freie Arztwahl
+								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Freie Arztwahl") ? "active" : "" ?>">
+									<input type="radio" name="versicherungsmodell" autocomplete="off" value="freiearztwahl"
+										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Freie Arztwahl") ? "checked" : "" ?>> Freie Arztwahl
 								</label>
-								<label class="btn btn-green <?php if(isset($versicherungsmodell_checked_hausarztmodell)) { echo "active";} ?>">
-									<input type="radio" name="versicherungsmodell" id="hausarztmodell" autocomplete="off" value="hausarztmodell" <?php if(isset($versicherungsmodell_checked_hausarztmodell)) { echo $versicherungsmodell_checked_hausarztmodell;} ?>> Hausarztmodell
+								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Hausarzt-Modell") ? "active" : "" ?>">
+									<input type="radio" name="versicherungsmodell" autocomplete="off" value="hausarztmodell"
+										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Hausarzt-Modell") ? "checked" : "" ?>> Hausarzt-Modell
 								</label>
-								<label class="btn btn-green <?php if(isset($versicherungsmodell_checked_telmedmodell)) { echo "active";} ?>">
-									<input type="radio" name="versicherungsmodell" id="telmedmodell" autocomplete="off" value="telmedmodell" <?php if(isset($versicherungsmodell_checked_telmedmodell)) { echo $versicherungsmodell_checked_telmedmodell;} ?>> Telmed-Modell
+								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Telmed-Modell") ? "active" : "" ?>">
+									<input type="radio" name="versicherungsmodell" autocomplete="off" value="telmedmodell" 
+										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Telmed-Modell") ? "checked" : "" ?>> Telmed-Modell
 								</label>
-								<label class="btn btn-green <?php if(isset($versicherungsmodell_checked_digimed)) { echo "active";} ?>">
-                                    <input type="radio" name="versicherungsmodell" id="digimed" autocomplete="off" value="digimed" <?php if(isset($versicherungsmodell_checked_digimed)) { echo $versicherungsmodell_checked_digimed;} ?>> Digimed-Modell
+								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Digimed-Modell") ? "active" : "" ?>">
+                                    <input type="radio" name="versicherungsmodell" autocomplete="off" value="digimedmodell" 
+										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Digimed-Modell") ? "checked" : "" ?>> Digimed-Modell
                                 </label>
 
 							</div>
 						</div>
-		
-						<!-- Spalte: Unfalldeckung -->
+
 						<div class="col-12 col-md-3">
 							<label style="display: block;">Unfalldeckung</label>
 							<div class="btn-group btn-group-toggle" data-toggle="buttons">
-								<label class="btn btn-green <?php if(isset($unfalldeckung_checked_ja)) { echo "active";} ?>">
-									<input type="radio" name="unfalldeckung" id="ja" autocomplete="off" value="ja" <?php if(isset($unfalldeckung_checked_ja)) { echo $unfalldeckung_checked_ja;} ?>> ja
+								<label class="btn btn-green <?php echo (isset($unfalldeckung) and $unfalldeckung == "ja") ? "active" : "" ?>">
+									<input type="radio" name="unfalldeckung" autocomplete="off" value="1"
+										<?php echo (isset($unfalldeckung) and $unfalldeckung == "ja") ? "checked" : "" ?>> ja
 								</label>
-								<label class="btn btn-green <?php if(isset($unfalldeckung_checked_nein)) { echo "active";} ?>">
-									<input type="radio" name="unfalldeckung" id="nein" autocomplete="off" value="nein" <?php if(isset($unfalldeckung_checked_nein)) { echo $unfalldeckung_checked_nein;} ?>> nein
+								<label class="btn btn-green <?php echo (isset($unfalldeckung) and $unfalldeckung == "nein") ? "active" : "" ?>">
+									<input type="radio" name="unfalldeckung" autocomplete="off" value="0"
+										<?php echo (isset($unfalldeckung) and $unfalldeckung == "nein") ? "checked" : "" ?>> nein
 								</label>
 							</div>
 						</div>
 					</div>
 				</div>
-		
-				<!-- Buttons -->
+
 				<p id="submit-buttons">
 					<button type="submit" class="btn btn-default violet" >
                         <i class="fas fa-check"></i> Berechnen
