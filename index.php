@@ -13,32 +13,31 @@
 			include 'header.php';
 			include 'connection.php';
 			include 'controller.php';
+			include 'plz.php';
+
+			if(isset($_GET['output'])) {
+				if(isset($_POST["jahrgang"])) {
+					$jahrgang = filter_var($_POST["jahrgang"], FILTER_SANITIZE_NUMBER_INT);
+				}
+				if(isset($_POST["postleitzahl"])) {
+					$postleitzahl = filter_var($_POST["postleitzahl"], FILTER_SANITIZE_NUMBER_INT);
+				}	
+				if(isset($_POST["praemienort"])) {
+					$praemienregion = filter_var($_POST["praemienort"], FILTER_SANITIZE_STRING);
+				}
+				if(isset($_POST["gesundheitskosten"])) {
+					$gesundheitskosten = intval($_POST["gesundheitskosten"]);
+				}
+				if(isset($_POST["versicherungsmodell"])) {
+					$versicherungsmodell = definiereVersicherungsmodell($_POST["versicherungsmodell"]);
+				}
+				if(isset($_POST["unfalldeckung"])) {
+					$unfalldeckung = definiereUnfalldeckung($_POST["unfalldeckung"]);
+				}
+			}
 		?>
 
 		<div class="container">
-			<?php
-				if(isset($_GET['output'])) {
-					if(isset($_POST["jahrgang"])) {
-						$jahrgang = filter_var($_POST["jahrgang"], FILTER_SANITIZE_NUMBER_INT);
-					}			
-					if(isset($_POST["postleitzahl"])) {
-						$postleitzahl = filter_var($_POST["postleitzahl"], FILTER_SANITIZE_NUMBER_INT);
-					}			
-					if(isset($_POST["praemienort"])) {
-						$praemienregion = filter_var($_POST["praemienort"], FILTER_SANITIZE_STRING);
-					}					
-					if(isset($_POST["gesundheitskosten"])) {
-						$gesundheitskosten = intval($_POST["gesundheitskosten"]);
-					}
-					if(isset($_POST["versicherungsmodell"])) {
-						$versicherungsmodell = definiereVersicherungsmodell($_POST["versicherungsmodell"]);
-					}					
-					if(isset($_POST["unfalldeckung"])) {
-						$unfalldeckung = definiereUnfalldeckung($_POST["unfalldeckung"]);
-					}
-				}
-			?>
-
             <div id="introductionContainer">
                 <i id="introductionIcon" class="fas fa-info fa-3x"></i>
 				<p id="introduction">
@@ -66,69 +65,31 @@
 									<input type="text" class="form-control" id="postleitzahl" size="40" min="1000" max="9999" maxlength="4" name="postleitzahl" placeholder="Postleitzahl" value="<?php if(isset( $postleitzahl)){echo htmlspecialchars($postleitzahl);}?>">
 								</div>
                             </div>
-								
-							<?php
-								if(isset($_POST["postleitzahl"])) {
-								$plz = filter_var($_POST['postleitzahl'], FILTER_SANITIZE_NUMBER_INT);
 
-									if(is_numeric($plz) AND $plz < 10000 AND $plz > 0){
-										$sql = "SELECT * FROM orte WHERE PLZ = '".$verbindung->real_escape_string($plz)."'";
-										$tarif = $verbindung->query($sql);
-										$c_tarif = $verbindung->query($sql);
-
-										$count = $c_tarif->fetch_assoc();
-										$count = $count['Ort'];
-
-										if($count != "") {
-											echo "<span id='praemienstadt' style=''>";
-												echo "<div class='form-group'><select class='form-control' name='praemienort' style='height: 100% !important;'>";
-												echo "<option  selected disabled hidden style='display: none' value='' ></option>";
-												
-												$while = 0;
-												while($stadt = $tarif->fetch_assoc()) {
-													$while++;
-													$ort = $stadt['Ort'];
-													$bfs = $stadt['BFS'];
-													$gemeinde = $stadt['Gemeinde'];
-													$praemienregion = $stadt['Kanton'];
-													
-													if($while == 1) {
-														$select = "selected";
-													} else { 
-														$select = "";
-													}											
-													echo "<option ".$select." value='".$praemienregion."'>".$ort." - ".$bfs." (".$gemeinde.")</option>";
-												}
-												echo "</select></div>";
-											echo "</span>";
-										} else {
-											echo "<p style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</p>";
-										}
-									} else {
-										echo "";
+							<span id='praemienstadt'>
+								<?php
+									if(isset($postleitzahl)) {
+										holeGemeinde($postleitzahl);
 									}
-								}
-							?>
-						
-							<span id='praemienstadt'></span>
+								?>
+							</span>
 
 							<script>
-								$( "#postleitzahl" ).keyup(function() {
-									if($('#postleitzahl').val().length == 4){
-
-										$.post('plz.php', {'plz': $('#postleitzahl').val() }, function(data) {
-												
-											if(data != ""){
-												$( "#praemienstadt").show();
-												$( "#praemienstadt").html(data);
-											}else{
-												$( "#praemienstadt").hide();
-											}
-										});
-
-									}else{
-										$( "#praemienstadt" ).hide();
+								$("#postleitzahl").keyup(function() {
+									if($('#postleitzahl').val().length != 4) { 
+										$("#praemienstadt").hide();
+										return;
 									}
+
+									$.post('plz.php', {'plz': $('#postleitzahl').val() }, function(data) {
+										if(data == ""){ 
+											$("#praemienstadt").hide();
+											return;
+										}
+										
+										$("#praemienstadt").show(); 
+										$("#praemienstadt").html(data);										
+									});
 								});
 							</script>				
 						</div>
