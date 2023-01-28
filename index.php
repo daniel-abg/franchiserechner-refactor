@@ -20,24 +20,19 @@
 				if(isset($_GET['output'])) {
 					if(isset($_POST["jahrgang"])) {
 						$jahrgang = filter_var($_POST["jahrgang"], FILTER_SANITIZE_NUMBER_INT);
-					}
-			
+					}			
 					if(isset($_POST["postleitzahl"])) {
 						$postleitzahl = filter_var($_POST["postleitzahl"], FILTER_SANITIZE_NUMBER_INT);
-					}
-			
+					}			
 					if(isset($_POST["praemienort"])) {
 						$praemienregion = filter_var($_POST["praemienort"], FILTER_SANITIZE_STRING);
-					}
-					
+					}					
 					if(isset($_POST["gesundheitskosten"])) {
 						$gesundheitskosten = intval($_POST["gesundheitskosten"]);
 					}
-
 					if(isset($_POST["versicherungsmodell"])) {
 						$versicherungsmodell = definiereVersicherungsmodell($_POST["versicherungsmodell"]);
-					}
-					
+					}					
 					if(isset($_POST["unfalldeckung"])) {
 						$unfalldeckung = definiereUnfalldeckung($_POST["unfalldeckung"]);
 					}
@@ -233,7 +228,7 @@
 											}
 											
 											if ($franchise < $gesundheitskosten) {
-												$franchisekosten = $franchise;	/* Wenn die Gesundheitskosten höher sind als die Franchise, so fällt die ganze Franchise an */
+												$franchisekosten = $franchise;
 												$selbstbehalt = berechneSelbstbehalt($franchise, $gesundheitskosten, $altersgruppe);
 											}
 											

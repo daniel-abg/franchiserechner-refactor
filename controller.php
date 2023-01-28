@@ -1,72 +1,33 @@
 <?php    
     function definiereAltersgruppe($prämienjahr, $jahrgang) {
         $altersjahr = $prämienjahr - $jahrgang;
-        
-        if ($altersjahr < 19) {
-            $altersgruppe = "Kinder";
-        } elseif ($altersjahr < 26) {
-            $altersgruppe = "Jugendliche";
-        } else {
-            $altersgruppe = "Erwachsene";
-        }
-        return $altersgruppe;
+        return ($altersjahr < 19) ? "Kinder" : (($altersjahr < 26) ? "Jugendliche" : "Erwachsene");
     }
 
     function definiereFranchisen($altersgruppe) {
-        if ($altersgruppe == "Kinder") {
-            $franchisen = array(0, 100, 200, 300, 400, 500);
-        } else {
-            $franchisen = array(300, 500, 1000, 1500, 2000, 2500);
-        }
-        return $franchisen;
+        return $altersgruppe == "Kinder" ? [0, 100, 200, 300, 400, 500] : [300, 500, 1000, 1500, 2000, 2500];
     }
 
-    function definiereUnfalldeckung($unfalldeckung) {				
-        switch($unfalldeckung){
-            case 0:
-                $unfalldeckung = "nein";
-                break;
-            case 1:
-                $unfalldeckung = "ja";
-                break;
-            default:
-                $unfalldeckung = '';
-        }
-        return $unfalldeckung;
+    function definiereUnfalldeckung($unfalldeckung) {
+        if(!isset($unfalldeckung)) { return ""; }
+        return $unfalldeckung == 0 ? "nein" : ($unfalldeckung == 1 ? "ja" : "");
     }
 
-    function definiereVersicherungsmodell($versicherungsmodell) {				
-        switch($_POST["versicherungsmodell"]){
-            case "freiearztwahl":
-                $versicherungsmodell = "Freie Arztwahl";
-                break;
-            case "hausarztmodell":
-                $versicherungsmodell = "Hausarzt-Modell";
-                break;
-            case "telmedmodell":
-                $versicherungsmodell = "Telmed-Modell";
-                break;
-            case "digimedmodell":
-                $versicherungsmodell = "Digimed-Modell";
-                break;
-            default:
-                $versicherungsmodell = "";
-        }
-        return $versicherungsmodell;
+    function definiereVersicherungsmodell($versicherungsmodell) {
+        if(!isset($versicherungsmodell)) { return ""; }
+        $modelle = [
+            "freiearztwahl" => "Freie Arztwahl",
+            "hausarztmodell" => "Hausarzt-Modell",
+            "telmedmodell" => "Telmed-Modell",
+            "digimedmodell" => "Digimed-Modell",
+        ];
+        return isset($modelle[$versicherungsmodell]) ? $modelle[$versicherungsmodell] : "";        
     }
 
     function berechneSelbstbehalt($franchise, $gesundheitskosten, $altersgruppe) {
-        $selbstbehalt2 = ($gesundheitskosten - $franchise)*0.1;
-        if ($altersgruppe != "Kinder" and $selbstbehalt2 < 700){
-            $selbstbehalt = ($gesundheitskosten - $franchise)*0.1; /* Nach der Franchise fallen von der Differenz vom Gesundheitskosten und Franchise der Selbstbehalt von 10% an */
-        } elseif ($altersgruppe != "Kinder" and $selbstbehalt2 >= 700) {
-            $selbstbehalt = 700; /* Erwachsenene zahlen einen maximalen Selbstbehalt von CHF 700.- */
-        } elseif ($altersgruppe = "Kinder" and $selbstbehalt2 < 350){
-            $selbstbehalt = ($gesundheitskosten - $franchise)*0.1;
-        } elseif ($altersgruppe = "Kinder" and $selbstbehalt2 >= 350) {
-            $selbstbehalt = 350; /* Kinder zahlen einen maximalen Selbstbehalt von CHF 350.- */
-        }
-        return $selbstbehalt;
+        $selbstbehalt = ($gesundheitskosten - $franchise) * 0.1;
+        $maxSelbstbehalt = ($altersgruppe === "Kinder") ? 350 : 700;
+        return min($selbstbehalt, $maxSelbstbehalt);
     }
     
     function holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
