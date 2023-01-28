@@ -161,15 +161,29 @@
 				if(isset($_GET['output'])) {
 					if (empty($jahrgang) or empty($praemienregion) or empty($versicherungsmodell) or empty($unfalldeckung)) {
 						echo '<div class="alert alert-warning" role="alert">Bitte füllen Sie alle Formularfelder aus.</div>';
-					} elseif($gesundheitskosten <0) {
+					} elseif($gesundheitskosten < 0) {
                         echo '<div class="alert alert-warning" role="alert">Bitte geben Sie positive Gesundheitskosten an.</div>';
                     } elseif($jahrgang > date("Y",strtotime('+1 year')) or $jahrgang < 1900) {
 						echo '<div class="alert alert-warning" role="alert">Bitte geben Sie einen gültigen Jahrgang an.</div>';
-					} else{
+					} else {
 						$altersgruppe = definiereAltersgruppe(PRAEMIENJAHR, $jahrgang);
 						$franchisen = definiereFranchisen($altersgruppe);
-						$monatspaemie = holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung);				
-						?>
+						$monatspaemie = holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung);
+						
+						foreach($franchisen as $franchise) {
+							if ($gesundheitskosten > $franchise) {
+								$franchisekosten = $franchise;
+								$selbstbehalt = berechneSelbstbehalt($franchise, $gesundheitskosten, $altersgruppe);
+							} else {
+								$franchisekosten = $gesundheitskosten;
+								$selbstbehalt = 0;
+							}
+							
+							$jahrespraemie[] = ($monatspaemie[$franchise]*12);
+							$franchisekostenArray[] = $franchisekosten;
+							$selbstbehaltArray[] = $selbstbehalt;
+						}			
+					?>
 						
 						<div class="box">
                             <h4>Kosten im Jahr <?php echo PRAEMIENJAHR ?>*</h4>
@@ -180,25 +194,7 @@
 										<th style="border-top: 0"; scope="col">Kosten in CHF</th>
 									</tr>
 								</thead>
-								<tbody>									
-									<?php
-										foreach($franchisen as $franchise) {											
-											if($franchise >= $gesundheitskosten) {
-												$franchisekosten = $gesundheitskosten;
-												$selbstbehalt = 0;
-											}
-											
-											if ($franchise < $gesundheitskosten) {
-												$franchisekosten = $franchise;
-												$selbstbehalt = berechneSelbstbehalt($franchise, $gesundheitskosten, $altersgruppe);
-											}
-											
-											$jahrespraemie[] = ($monatspaemie[$franchise]*12);
-											$franchisekostenArray[] = $franchisekosten;
-											$selbstbehaltArray[] = $selbstbehalt;
-										}
-									?>
-									
+								<tbody>
 									<?php
 										for($i = 0; $i < 6; $i++) {
 											echo "<tr>
