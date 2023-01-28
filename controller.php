@@ -54,4 +54,24 @@
         }
         return $versicherungsmodell;
     }
+
+    function berechneSelbstbehalt($franchise, $gesundheitskosten, $altersgruppe) {
+        $selbstbehalt2 = ($gesundheitskosten - $franchise)*0.1;
+        if ($altersgruppe != "Kinder" and $selbstbehalt2 < 700){
+            $selbstbehalt = ($gesundheitskosten - $franchise)*0.1; /* Nach der Franchise fallen von der Differenz vom Gesundheitskosten und Franchise der Selbstbehalt von 10% an */
+        } elseif ($altersgruppe != "Kinder" and $selbstbehalt2 >= 700) {
+            $selbstbehalt = 700; /* Erwachsenene zahlen einen maximalen Selbstbehalt von CHF 700.- */
+        } elseif ($altersgruppe = "Kinder" and $selbstbehalt2 < 350){
+            $selbstbehalt = ($gesundheitskosten - $franchise)*0.1;
+        } elseif ($altersgruppe = "Kinder" and $selbstbehalt2 >= 350) {
+            $selbstbehalt = 350; /* Kinder zahlen einen maximalen Selbstbehalt von CHF 350.- */
+        }
+        return $selbstbehalt;
+    }
+    
+    function holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
+        $sql = "SELECT * FROM ".strtolower($verbindung->real_escape_string($altersgruppe))." WHERE Versicherungsmodell='".$verbindung->real_escape_string($versicherungsmodell)."' AND Kanton='".$verbindung->real_escape_string($praemienregion)."' AND Unfall='".$verbindung->real_escape_string($unfalldeckung)."'";
+        $tarif = $verbindung->query($sql);
+        return $tarif->fetch_assoc();	
+    }
 ?>
