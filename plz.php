@@ -13,34 +13,23 @@
 	include 'connection.php';
 
 	$sql = "SELECT * FROM orte WHERE PLZ = '".$verbindung->real_escape_string($plz)."'";
-	$tarif = $verbindung->query($sql);
-	$c_tarif = $verbindung->query($sql);
-
-	$count = $c_tarif->fetch_assoc();
-
-	if($count == "") { 
+	$resultat = $verbindung->query($sql);
+	
+	if($resultat->num_rows == 0) { 
 		echo "<p style='margin-top: 5px;'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</p>";
 		return;
 	}
 
-	$count = $count['Ort'];
-
 	echo "<div class='form-group'>
-				<select class='form-control' name='praemienort' style='height: 100% !important;'>
-					<option selected disabled hidden style='display: none' value=''></option>";
-	
-	$while = 0;
-	while($stadt = $tarif->fetch_assoc()) {
-		$while++;
-		$ort = $stadt['Ort'];
-		$bfs = $stadt['BFS'];
-		$gemeinde = $stadt['Gemeinde'];
-		$praemienregion = $stadt['Kanton'];
-		$select = ($while == 1) ? "selected" : "";		
-		echo "<option ".$select." value='".$praemienregion."'>".$ort." - ".$bfs." (".$gemeinde.")</option>";
-	}
-	
-	echo "		</select>
+			<select class='form-control' name='praemienort' style='height: 100% !important;'>";	
+				while($eintrag = $resultat->fetch_assoc()) {
+					$gemeinde = $eintrag['Gemeinde'];
+					$bfs = $eintrag['BFS'];
+					$ort = $eintrag['Ort'];
+					$praemienregion = $eintrag['Kanton'];	
+					echo "<option value='".$praemienregion."'>".$ort." - ".$bfs." (".$gemeinde.")</option>";
+				}	
+	echo "	</select>
 		</div>";
 	}
 ?>
