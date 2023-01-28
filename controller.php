@@ -1,6 +1,6 @@
 <?php    
-    function definiereAltersgruppe($jahrgang) {
-        $altersjahr = date("Y") - $jahrgang;
+    function definiereAltersgruppe($prämienjahr, $jahrgang) {
+        $altersjahr = $prämienjahr - $jahrgang;
         
         if ($altersjahr < 19) {
             $altersgruppe = "Kinder";

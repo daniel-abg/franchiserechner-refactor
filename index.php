@@ -8,6 +8,8 @@
 	<body>
     <div id="wrapper">
 		<?php 
+			define("PRAEMIENJAHR", 2023);
+
 			include 'header.php';
 			include 'connection.php';
 			include 'controller.php';
@@ -208,7 +210,7 @@
                     }elseif($jahrgang > date("Y",strtotime('+1 year')) or $jahrgang < 1900) {
 						echo '<div class="alert alert-warning" role="alert">Bitte geben Sie einen gültigen Jahrgang an.</div>';
 					}else {
-						$altersgruppe = definiereAltersgruppe($jahrgang);
+						$altersgruppe = definiereAltersgruppe(PRAEMIENJAHR, $jahrgang);
 						$franchisen = definiereFranchisen($altersgruppe);
 						
 						/* Jahresprämie rechnen */
@@ -224,7 +226,7 @@
 						
 						<!-- Errechnung und Ausgabe der Kosten -->
 						<div class="box">
-                            <h4>Kosten im Jahr 2022*</h4>
+                            <h4>Kosten im Jahr <?php echo PRAEMIENJAHR ?>*</h4>
 							<table class="table">
 								<thead>
 									<tr>
