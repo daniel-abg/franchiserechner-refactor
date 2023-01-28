@@ -1,4 +1,4 @@
 <!-- Fussbereich -->
 <div id="footer">
-	<p>2021, sodalis gesundheitsgruppe</p>
+	<p>2023, sodalis gesundheitsgruppe</p>
 </div>
