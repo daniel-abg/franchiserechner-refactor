@@ -32,7 +32,6 @@
     
     function holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
         $sql = "SELECT * FROM ".strtolower($verbindung->real_escape_string($altersgruppe))." WHERE Versicherungsmodell='".$verbindung->real_escape_string($versicherungsmodell)."' AND Kanton='".$verbindung->real_escape_string($praemienregion)."' AND Unfall='".$verbindung->real_escape_string($unfalldeckung)."'";
-        $tarif = $verbindung->query($sql);
-        return $tarif->fetch_assoc();	
+        return $verbindung->query($sql)->fetch_assoc();
     }
 ?>

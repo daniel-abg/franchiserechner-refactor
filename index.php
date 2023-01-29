@@ -49,22 +49,22 @@
 				<h4>Persönliche Daten</h4>
 				<div class="box">
 					<div class="row">
-						<div class="col-12 col-md-4 form-group">
-							<label for="jahrgang">Jahrgang</label>
+						<div class="col-12 col-md-4 mb-3">
+							<label for="jahrgang" class="form-label fw-bold">Jahrgang</label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fas fa-birthday-cake"></i></span>
-							<input type="text" class="form-control" size="40" min="1900" max="<?php echo date("Y"); ?>" maxlength="250" name="jahrgang" placeholder="Jahrgang" value="<?php if(isset( $jahrgang)){echo htmlspecialchars($jahrgang);}?>">
-                        </div>
+                                <span class="input-group-text"><i class="fas fa-birthday-cake"></i></span>
+								<input type="text" class="form-control" id="jahrgang" size="40" min="1900" max="<?php echo date("Y"); ?>" maxlength="4" name="jahrgang"
+									placeholder="Jahrgang" autocomplete="off" value="<?php if(isset( $jahrgang)){echo htmlspecialchars($jahrgang);}?>">
+                       		</div>
                         </div>
 
-						<div class="col-12 col-md-4">
-							<div class="form-group">
-								<label for="postleitzahl">Postleitzahl</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fas fa-map-marker-alt"></i></span>
-									<input type="text" class="form-control" id="postleitzahl" size="40" min="1000" max="9999" maxlength="4" name="postleitzahl" placeholder="Postleitzahl" value="<?php if(isset( $postleitzahl)){echo htmlspecialchars($postleitzahl);}?>">
-								</div>
-                            </div>
+						<div class="col-12 col-md-4 mb-3">
+							<label for="postleitzahl" class="form-label fw-bold">Postleitzahl</label>
+							<div class="input-group">
+								<span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+								<input type="text" class="form-control" id="postleitzahl" size="40" min="1000" max="9999" maxlength="4" name="postleitzahl"
+									placeholder="Postleitzahl" autocomplete="off" value="<?php if(isset( $postleitzahl)){echo htmlspecialchars($postleitzahl);}?>">
+							</div>
 
 							<span id='praemienstadt'>
 								<?php
@@ -94,12 +94,13 @@
 							</script>				
 						</div>
 
-						<div class="col-12 col-md-4 form-group">
-							<label for="gesundheitskosten">Jährliche Gesundheitskosten</label>
+						<div class="col-12 col-md-4 mb-3">
+							<label for="gesundheitskosten" class="form-label fw-bold">Jährliche Gesundheitskosten</label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fas fa-wallet"></i></span>
-							<input type="text" class="form-control" size="40" maxlength="250" name="gesundheitskosten" placeholder="Gesundheitskosten" value="<?php if(isset( $gesundheitskosten)){echo htmlspecialchars($gesundheitskosten);}?>">
-						</div>
+                                <span class="input-group-text"><i class="fas fa-wallet"></i></span>
+								<input type="text" class="form-control" id="gesundheitskosten" size="40" maxlength="250" name="gesundheitskosten" 
+									placeholder="Gesundheitskosten" autocomplete="off" value="<?php if(isset( $gesundheitskosten)){echo htmlspecialchars($gesundheitskosten);}?>">
+							</div>
                         </div>
 					</div>
 				</div>
@@ -107,40 +108,37 @@
 				<h4>Grundversicherung</h4>
 				<div class="box">
 					<div class="row">
-						<div class="col-12 col-md-9">
-							<label style="display: block;">Versicherungsmodell</label>
-							<div class="btn-group btn-group-toggle" data-toggle="buttons">
-								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Freie Arztwahl") ? "active" : "" ?>">
-									<input type="radio" name="versicherungsmodell" autocomplete="off" value="freiearztwahl"
-										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Freie Arztwahl") ? "checked" : "" ?>> Freie Arztwahl
-								</label>
-								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Hausarzt-Modell") ? "active" : "" ?>">
-									<input type="radio" name="versicherungsmodell" autocomplete="off" value="hausarztmodell"
-										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Hausarzt-Modell") ? "checked" : "" ?>> Hausarzt-Modell
-								</label>
-								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Telmed-Modell") ? "active" : "" ?>">
-									<input type="radio" name="versicherungsmodell" autocomplete="off" value="telmedmodell" 
-										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Telmed-Modell") ? "checked" : "" ?>> Telmed-Modell
-								</label>
-								<label class="btn btn-green <?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Digimed-Modell") ? "active" : "" ?>">
-                                    <input type="radio" name="versicherungsmodell" autocomplete="off" value="digimedmodell" 
-										<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Digimed-Modell") ? "checked" : "" ?>> Digimed-Modell
-                                </label>
+						<div class="col-12 col-md-9 mb-3">
+							<label style="display: block;" class="form-label fw-bold">Versicherungsmodell</label>
+							<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+								<input type="radio" class="btn-check" name="versicherungsmodell" id="freiearztwahl" value="freiearztwahl" autocomplete="off"
+									<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Freie Arztwahl") ? "checked" : "" ?>>
+								<label class="btn btn-green" for="freiearztwahl">Freie Arztwahl</label>
 
+								<input type="radio" class="btn-check" name="versicherungsmodell" id="hausarztmodell" value="hausarztmodell" autocomplete="off" 
+									<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Hausarzt-Modell") ? "checked" : "" ?>>
+								<label class="btn btn-green" for="hausarztmodell">Hausarzt-Modell</label>
+
+								<input type="radio" class="btn-check" name="versicherungsmodell" id="telmedmodell" value="telmedmodell" autocomplete="off"
+									<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Telmed-Modell") ? "checked" : "" ?>>
+								<label class="btn btn-green" for="telmedmodell">Telmed-Modell</label>
+
+								<input type="radio" class="btn-check" name="versicherungsmodell" id="digimedmodell" value="digimedmodell" autocomplete="off"
+									<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Digimed-Modell") ? "checked" : "" ?>>
+								<label class="btn btn-green" for="digimedmodell">Digimed-Modell</label>
 							</div>
 						</div>
 
-						<div class="col-12 col-md-3">
-							<label style="display: block;">Unfalldeckung</label>
-							<div class="btn-group btn-group-toggle" data-toggle="buttons">
-								<label class="btn btn-green <?php echo (isset($unfalldeckung) and $unfalldeckung == "ja") ? "active" : "" ?>">
-									<input type="radio" name="unfalldeckung" autocomplete="off" value="1"
-										<?php echo (isset($unfalldeckung) and $unfalldeckung == "ja") ? "checked" : "" ?>> ja
-								</label>
-								<label class="btn btn-green <?php echo (isset($unfalldeckung) and $unfalldeckung == "nein") ? "active" : "" ?>">
-									<input type="radio" name="unfalldeckung" autocomplete="off" value="0"
-										<?php echo (isset($unfalldeckung) and $unfalldeckung == "nein") ? "checked" : "" ?>> nein
-								</label>
+						<div class="col-12 col-md-3 mb-3">
+							<label style="display: block;" class="form-label fw-bold">Unfalldeckung</label>
+							<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+								<input type="radio" class="btn-check" name="unfalldeckung" id="ja" value="1" autocomplete="off"
+									<?php echo (isset($unfalldeckung) and $unfalldeckung == "ja") ? "checked" : "" ?>>
+								<label class="btn btn-green" for="ja">Ja</label>
+
+								<input type="radio" class="btn-check" name="unfalldeckung" id="nein" value="0" autocomplete="off"
+									<?php echo (isset($unfalldeckung) and $unfalldeckung == "nein") ? "checked" : "" ?>>
+								<label class="btn btn-green" for="nein">Nein</label>
 							</div>
 						</div>
 					</div>
@@ -202,7 +200,7 @@
 														".$franchisen[$i]."
 													</td>
 													<td class='td-kosten'>
-														<a class='a-kosten' data-toggle='collapse' href='#collapseKosten".$i."' role='button' aria-expanded='false' aria-controls='collapseKosten".$i."'>
+														<a class='a-kosten' data-bs-toggle='collapse' href='#collapseKosten".$i."' role='button' aria-expanded='false' aria-controls='collapseKosten".$i."'>
 															".$jahrespraemie[$i] + $franchisekostenArray[$i] + $selbstbehaltArray[$i]."<i style='float: right;' class='fas fa-info'></i>
 														</a>
 														<div class='collapse' id='collapseKosten".$i."'>

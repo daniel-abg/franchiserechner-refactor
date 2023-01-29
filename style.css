@@ -1,24 +1,17 @@
-/* Gesamter Bereich */
 * {
 	font-family: 'Roboto', non-serif;
-	font-size: 16px;
 }
-
-html,body{
+html, body{
 	max-width: 100%;
 	overflow-x: hidden;
 }
-
 body {
-	background-color: #f1efed;
-
+	background-color: #F1EFED;
 }
-
-div#wrapper{
+div#wrapper {
 	min-height: calc(100vh - 60px);
 	height: 100%;
 }
-
 div.container {
 	max-width: 970px;
 }
@@ -26,20 +19,19 @@ div.container {
 /* Kopfbereich */
 div#header {
 	margin-bottom: 30px;
+	box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
 }
-
 div#title {
 	background-color: #7F3589;
 	height: 116.125px;
 }
-
 div#header h1 {
 	text-align: center;
-	color: #ffffff;
+	color: white;
 	margin-top: 35px;
 }
 div#logo {
-	background-color: #ffffff;
+	background-color: white;
 }
 .logo {
 	width: 269px;
@@ -47,32 +39,30 @@ div#logo {
 }
 
 /* Inhaltsbereich */
-h4{
+h4 {
 	margin-left: 10px;
-
 }
-
 form {
-	background-color: #ffffff;
+	background-color: white;
 	margin: 20px 0 20px 0;
 	padding: 10px;
 	padding-bottom: 20px;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
 }
-
 div.box {
 	padding: 10px 20px 20px 20px;
 	margin-top: 20px;
 	margin-bottom: 30px;
-	background-color: #ffffff;
+	background-color: white;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
 }
-
-
 div#introductionContainer {
 	padding: 0 10px;
 	display: flex;
-	background-color: #ffffff;
+	background-color: white;
 	align-items: center;
 	border-radius: 3px;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
 }
 i#introductionIcon{
 	color: #7F3589;
@@ -82,41 +72,33 @@ i#introductionIcon{
 p#introduction {
 	margin-top: 23px;
 }
-
 a {
 	color: black;
 }
-
 a:hover {
 	text-decoration: none;
 	color: black;
 }
-
 .a-kosten {
 	display: block;
 	padding: 12px;
+	text-decoration: none;
 }
-
 .a-kosten:hover {
-	background-color: #8cbd3a;
+	background-color: #8CBD3A;
 	color: white;
 }
-
 td.td-kosten {
 	padding: 0;
 }
-
 .card {
 	margin-bottom: 12px;
 }
-
-/* Formulare */
 p#submit-buttons {
 	margin-left: 10px;
 }
-
 .btn-default {
-	background: linear-gradient(to left, #7F3589 50%, #8cbd3a 50%) right;
+	background: linear-gradient(to left, #7F3589 50%, #8CBD3A 50%) right;
 	color: white;
 	width: 150px;
 	border-radius: revert;
@@ -124,57 +106,34 @@ p#submit-buttons {
 	background-size: 180%;
 	transition: all .5s ease-out;
 }
-
 .btn-default:hover {
 	background-position: left;
 	background-size: 200%;
 }
-
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    color: white;
+    background-color: #8CBD3A;
+    border-color: #8CBD3A;
+}
+.btn-group > .btn:hover {
+	border-color: #CED4DA !important;
+}
 .btn-green {
 	background-color: white;
 	color: black;
-	border: 1px solid #ddd;
+	border: 1px solid #CED4DA;
 
 }
-
-.btn-light{
-	background-color: #f1efed;
+.btn-light {
+	background-color: #F1EFED;
 	width: 150px;
 	margin-left: 10px;
 	border-radius: revert;
 }
-
-.btn-group-toggle {
-	margin-bottom: 10px;
-}
-
-:not(:disabled):not(.disabled).btn-green.active, :not(:disabled):not(.disabled).btn-green:active, .show > .btn-green.dropdown-toggle {
-	background-color: #8cbd3a;
-	color: white;
-	border-color: #8cbd3a;
-}
-
-@media screen and (max-width: 767.5px) {
-    .btn-group-toggle {
-		display: block;
-	}
-	
-	.btn.btn-green {
-		width: 100%;
-		margin-bottom: 10px;
-	}
-}
-
-div.alert{
+div.alert {
 	margin-top: 10px;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
 }
-
-/* Dropdown */
-.dropdown-praemienort {
-	width: 100%;
-}
-
-/*Eingabefelder */
 select {
 	height: 34px;
 	border-radius: 5px;
@@ -184,12 +143,11 @@ select {
 
 /* Fussbereich */
 div#footer {
-	color: #ffffff;
+	color: white;
 	height: 60px;
 	width: 100%;
 	background-color: #7F3589;
 }
-
 div#footer p {
 	text-align: center;
 	line-height: 60px;
