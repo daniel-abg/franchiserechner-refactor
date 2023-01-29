@@ -12,7 +12,7 @@
 
 			include 'header.php';
 			include 'connection.php';
-			include 'controller.php';
+			include 'functions.php';
 			include 'plz.php';
 
 			if(isset($_GET['output'])) {
@@ -220,8 +220,7 @@
 						
 						<?php
 							$verbindung->close();
-							echo "<p>*Bitte beachten Sie, dass die Berechnung auf Ihren Angaben basiert und daher keine Garantie gewährleistet wird.</p>";
-					}
+							echo '<div class="alert alert-info" role="alert">*Bitte beachten Sie, dass die Berechnung auf Ihren Angaben basiert und daher keine Garantie gewährleistet wird.</div>';					}
 				}
 			?>
 		</div>

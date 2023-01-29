@@ -16,7 +16,7 @@
 		$resultat = $verbindung->query($sql);
 		
 		if($resultat->num_rows == 0) { 
-			echo "<p class='mt-3 mb-0'>Die Grundversicherung bieten wir in den Kantonen Wallis und Bern an.</p>";
+			echo "<p class='mt-3 mb-0'>Die Grundversicherung bieten wir lediglich in den Kantonen Wallis und Bern an.</p>";
 			return;
 		}
 
