@@ -109,7 +109,7 @@
 				<div class="box">
 					<div class="row">
 						<div class="col-12 col-md-9 mb-3">
-							<label style="display: block;" class="form-label fw-bold">Versicherungsmodell</label>
+							<label class="form-label fw-bold d-block">Versicherungsmodell</label>
 							<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 								<input type="radio" class="btn-check" name="versicherungsmodell" id="freiearztwahl" value="freiearztwahl" autocomplete="off"
 									<?php echo (isset($versicherungsmodell) and $versicherungsmodell == "Freie Arztwahl") ? "checked" : "" ?>>
@@ -130,7 +130,7 @@
 						</div>
 
 						<div class="col-12 col-md-3 mb-3">
-							<label style="display: block;" class="form-label fw-bold">Unfalldeckung</label>
+							<label class="form-label fw-bold d-block">Unfalldeckung</label>
 							<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
 								<input type="radio" class="btn-check" name="unfalldeckung" id="ja" value="1" autocomplete="off"
 									<?php echo (isset($unfalldeckung) and $unfalldeckung == "ja") ? "checked" : "" ?>>
@@ -188,23 +188,23 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th style="border-top: 0"; scope="col">Franchise</th>
-										<th style="border-top: 0"; scope="col">Kosten in CHF</th>
+										<th scope="col">Franchise</th>
+										<th scope="col">Kosten in CHF</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php
 										for($i = 0; $i < 6; $i++) {
 											echo "<tr>
-													<td style='padding: 20px'>
+													<td class='td-franchise'>
 														".$franchisen[$i]."
 													</td>
 													<td class='td-kosten'>
 														<a class='a-kosten' data-bs-toggle='collapse' href='#collapseKosten".$i."' role='button' aria-expanded='false' aria-controls='collapseKosten".$i."'>
-															".$jahrespraemie[$i] + $franchisekostenArray[$i] + $selbstbehaltArray[$i]."<i style='float: right;' class='fas fa-info'></i>
+															".$jahrespraemie[$i] + $franchisekostenArray[$i] + $selbstbehaltArray[$i]."<i class='fas fa-info float-right'></i>
 														</a>
 														<div class='collapse' id='collapseKosten".$i."'>
-															<div style='margin-top: 10px;' class='card card-body'>
+															<div class='card card-body'>
 																Jahresprämie: ".$jahrespraemie[$i]."<br>
 																Franchise: ".$franchisekostenArray[$i]."<br>
 																Selbstbehalt: ".$selbstbehaltArray[$i]."

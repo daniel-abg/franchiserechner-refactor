@@ -87,11 +87,17 @@ a:hover {
 	background-color: #8CBD3A;
 	color: white;
 }
+td.td-franchise {
+	padding: 12px;
+}
 td.td-kosten {
 	padding: 0;
 }
 .card {
-	margin-bottom: 12px;
+	margin: 10px 0 15px 0;
+}
+.float-right {
+	float: right;
 }
 p#submit-buttons {
 	margin-left: 10px;
