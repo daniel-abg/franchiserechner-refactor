@@ -1,4 +1,4 @@
-<?php    
+<?php
     function definiereAltersgruppe($prämienjahr, $jahrgang) {
         $altersjahr = $prämienjahr - $jahrgang;
         return ($altersjahr < 19) ? "Kinder" : (($altersjahr < 26) ? "Jugendliche" : "Erwachsene");
@@ -9,7 +9,6 @@
     }
 
     function definiereUnfalldeckung($unfalldeckung) {
-        if(!isset($unfalldeckung)) { return ""; }
         return $unfalldeckung == 0 ? "nein" : ($unfalldeckung == 1 ? "ja" : "");
     }
 

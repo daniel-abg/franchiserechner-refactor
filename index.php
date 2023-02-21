@@ -7,7 +7,7 @@
 
 	<body>
     <div id="wrapper">
-		<?php 
+		<?php
 			define("PRAEMIENJAHR", 2023);
 
 			include 'header.php';
