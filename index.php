@@ -13,7 +13,6 @@
 			include 'header.php';
 			include 'connection.php';
 			include 'functions.php';
-			include 'plz.php';
 
 			if(isset($_GET['output'])) {
 				if(isset($_POST["jahrgang"])) {
@@ -21,7 +20,7 @@
 				}
 				if(isset($_POST["postleitzahl"])) {
 					$postleitzahl = filter_var($_POST["postleitzahl"], FILTER_SANITIZE_NUMBER_INT);
-				}	
+				}
 				if(isset($_POST["praemienort"])) {
 					$praemienregion = filter_var($_POST["praemienort"], FILTER_SANITIZE_STRING);
 				}
